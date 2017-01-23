@@ -13,9 +13,9 @@ def is_path_writable(path):
 
 # path variables
 
-data_location = "data/cedict_ts.u8"
 default_dir = os.path.normpath(os.path.expanduser('~'))
 root_dir = os.path.dirname(os.path.realpath(__file__))
+data_location = os.path.normpath(os.path.join(root_dir, "data/cedict_ts.u8"))
 
 # Assign CLI arguments to values here.
 # It should go something like this:
@@ -41,16 +41,16 @@ if not file_dest is None and os.path.isabs(file_dest):
 elif file_dest is None:
     if default_dir == "~" or default_dir is None:
         system.stdout.write("Unable to access home directory falling back to root.")
-        c_uri = root_dir+"/output"
-        if not os.path.isdir(c_uri):
-            os.mkdir(c_uri)
-        is_path_writable(c_uri)
+        file_dest = root_dir+"/output"
+        if not os.path.isdir(file_dest):
+            os.mkdir(file_dest)
+        is_path_writable(file_dest)
     else:
-        c_uri = default_dir
-        is_path_writable(c_uri)
+        file_dest = default_dir
+        is_path_writable(file_dest)
 
 elif not os.path.isabs(file_dest):
-    c_url = os.path.join(root_dir, file_dest)
+    file_dest = os.path.join(root_dir, file_dest)
     is_path_writable(file_dest)
 
 # Variable declarations
