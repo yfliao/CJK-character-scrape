@@ -9,13 +9,27 @@ def is_path_writable(path):
         sys.stdout.flush()
     else:
         sys.exit("The directory: {}, either does not exist or lacks write permissions".format(path))
-    return False
+        return False
+
+def default_dir_fallback():
+
+    system.stdout.write("Unable to make required folder in home directory, falling back to root")
+    file_dest = DEFAULT_DIR
+
+    if DEFAULT_DIR == "~" or DEFAULT_DIR is None:
+        sys.exit("Unable to use root or default directory, exiting...")
+
+        if not os.path.isdir(file_dest+"/output"):
+            try:
+                os.mkdir(file_dest)
+            except OSError:
+                sys.exit("Unable to create output folder in root directory, exiting...")
 
 # path variables
 
-default_dir = os.path.normpath(os.path.expanduser('~'))
-root_dir = os.path.dirname(os.path.realpath(__file__))
-data_location = os.path.normpath(os.path.join(root_dir, "data/cedict_ts.u8"))
+DEFAULT_DIR = os.path.normpath(os.path.expanduser('~'))
+ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+DATA_LOCATION = os.path.normpath(os.path.join(ROOT_DIR, "data/cedict_ts.u8"))
 
 # Assign CLI arguments to values here.
 # It should go something like this:
@@ -39,18 +53,26 @@ except:
 if not file_dest is None and os.path.isabs(file_dest):
     is_path_writable(file_dest)
 elif file_dest is None:
-    if default_dir == "~" or default_dir is None:
+    if DEFAULT_DIR == "~" or DEFAULT_DIR is None:
         system.stdout.write("Unable to access home directory falling back to root.")
-        file_dest = root_dir+"/output"
+        file_dest = ROOT_DIR+"/output"
         if not os.path.isdir(file_dest):
             os.mkdir(file_dest)
         is_path_writable(file_dest)
     else:
-        file_dest = default_dir
+        file_dest = DEFAULT_DIR
         is_path_writable(file_dest)
+elif file_dest is None:
+    file_dest = ROOT_DIR+"/output"
+    if not os.path.isdir(file_dest):
+        # if os.mkdir fails it should raise an OSError
+        try:
+            os.mkdir(file_dest)
+        except OSError:
+
+            sys.stdout.write("Unable to make required directory, falling back to root")
+            file_dest = DEFAULT_DIR
 
 elif not os.path.isabs(file_dest):
-    file_dest = os.path.join(root_dir, file_dest)
+    file_dest = os.path.join(ROOT_DIR, file_dest)
     is_path_writable(file_dest)
-
-# Variable declarations
