@@ -18,9 +18,6 @@ class CsvReadWrite(object):
         self.file_name = fileName
         self.output_dest = self.get_output_location()
 
-        print(self.output_dest)
-        print(self.file_name)
-
     def get_output_location(self):
 
         if not isinstance(self.output_dir, str) or not isinstance(self.file_name, str):
@@ -78,9 +75,10 @@ class CsvReadWrite(object):
             values = [key]
 
             for subkey in value:
+
                 values.append(value[subkey])
 
-                lines_write.append(values)
+            lines_write.append(values)
 
         for i in lines_write:
 
@@ -91,5 +89,6 @@ class CsvReadWrite(object):
             with open(self.output_dest, "wb") as f:
                 f.write(strings_write.encode("utf-8"))
                 print("Successfully wrote to the file: {}".format(self.output_dest))
+
         except IOError as e:
             print("Couldn't write to the designated file. {}".format(e))

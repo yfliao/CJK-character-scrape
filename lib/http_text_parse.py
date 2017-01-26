@@ -1,12 +1,8 @@
-# Let's see what it does with CLI args.
-
 from bs4 import BeautifulSoup
 import re
 import sys
 from urllib.parse import urlparse
 import urllib.request
-
-# Reformat this later, I don't know whether to make class or just instantiate a thign.
 
 class HttpTextParse(object):
 

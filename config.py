@@ -19,11 +19,11 @@ def default_dir_fallback():
     if DEFAULT_DIR == "~" or DEFAULT_DIR is None:
         sys.exit("Unable to use root or default directory, exiting...")
 
-        if not os.path.isdir(file_dest+"/output"):
-            try:
-                os.mkdir(file_dest)
-            except OSError:
-                sys.exit("Unable to create output folder in root directory, exiting...")
+    if not os.path.isdir(file_dest+"/output"):
+        try:
+            os.mkdir(file_dest)
+        except OSError:
+            sys.exit("Unable to create output folder in root directory, exiting...")
 
 # path variables
 
@@ -53,26 +53,13 @@ except:
 if not file_dest is None and os.path.isabs(file_dest):
     is_path_writable(file_dest)
 elif file_dest is None:
-    if DEFAULT_DIR == "~" or DEFAULT_DIR is None:
-        system.stdout.write("Unable to access home directory falling back to root.")
-        file_dest = ROOT_DIR+"/output"
-        if not os.path.isdir(file_dest):
-            os.mkdir(file_dest)
-        is_path_writable(file_dest)
-    else:
-        file_dest = DEFAULT_DIR
-        is_path_writable(file_dest)
-elif file_dest is None:
     file_dest = ROOT_DIR+"/output"
     if not os.path.isdir(file_dest):
-        # if os.mkdir fails it should raise an OSError
+        # if os.mkdir fails, it should raise an OSError
         try:
             os.mkdir(file_dest)
         except OSError:
-
-            sys.stdout.write("Unable to make required directory, falling back to root")
-            file_dest = DEFAULT_DIR
-
+            default_dir_fallback()
 elif not os.path.isabs(file_dest):
     file_dest = os.path.join(ROOT_DIR, file_dest)
     is_path_writable(file_dest)

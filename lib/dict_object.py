@@ -3,6 +3,10 @@
 
 class DictObject(object):
 
+    '''
+        From the cc_dict file, create a dictionary object to find and search from
+    '''
+    
     def __init__(self, dictionary, text):
 
         self.dict = dictionary
@@ -42,7 +46,6 @@ class DictObject(object):
             except KeyError:
 
                 if matched:
-                    # you should push the match into a python object here
                     self.text = self.text[ix:]
                     ix = 0
                     matches[current_text[:-1]] = match
